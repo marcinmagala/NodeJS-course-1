@@ -1,7 +1,11 @@
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
+
+const slugify = require("slugify");
+
 const replaceTemplate = require("./modules/replaceTemplate");
+
 ////////////////////////////////
 /////////FILES
 
@@ -98,6 +102,9 @@ const server = http.createServer((req, res) => {
   } else if (pathname === "/product") {
     res.writeHead("200", { "content-type": "text/html" });
     const product = dataObj[query.id];
+
+    const slugs = dataObj.map((el) => slugify(el.productName, { lower: true }));
+    console.log(slugs);
 
     const output = replaceTemplate(tempProduct, product);
     res.end(output);
